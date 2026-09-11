@@ -2,11 +2,29 @@ from pathlib import Path
 
 import pandas as pd
 
-RUTA_EXCEL = Path(__file__).with_name("kaismart_eventos_logisticos.xlsx")
 
-def crear_df_logistica(ruta=RUTA_EXCEL):
-	"""Crea y devuelve el DataFrame de logística desde el archivo Excel."""
-	return pd.read_excel(ruta)
+def crear_df_logistica(ruta=None):
+	"""Lee la fuente Excel y devuelve df_logistica sin transformar los datos."""
+	if ruta is None:
+		ruta = Path(__file__).with_name("kaismart_eventos_logisticos.xlsx")
+	df = pd.read_excel(ruta)
+
+	print("COMPROBACIÓN DE EXTRACCIÓN: df_logistica")
+	print(f"Dimensiones (shape): {df.shape}")
+	print("\nColumnas del DataFrame de logística:")
+	print(df.columns.tolist())
+	print("\nPrimeras 5 filas (head):")
+	print(df.head())
+	print("\nMuestra aleatoria de 5 registros (sample):")
+	print(df.sample(5, random_state=42) if len(df) >= 5 else df)
+
+	print("COMPRENSIÓN INICIAL: ¿Qué representa una fila?")
+	print("• Una fila de df_logistica representa un evento o hito en el ciclo de vida logístico de un pedido (procesamiento, despacho, tránsito, entrega, incidencia).")
+	if "fecha_evento" in df.columns:
+		fechas = pd.to_datetime(df["fecha_evento"], errors="coerce")
+		print(f"• Rango de fechas de eventos en df_logistica: {fechas.min()} hasta {fechas.max()}")
+
+	return df
 
 def _clasificar_columnas(df):
 	"""Identifica fechas, IDs, variables categóricas y variables numéricas."""
@@ -239,35 +257,19 @@ def resumenes_solicitados(df):
 			print(resumenes[columna])
 	return {"frecuencias": frecuencias, "resumenes_numericos": resumenes}
 
-def ejecutar_analisis():
+def ejecutar_analisis(df=None):
 	"""Ejecuta todas las secciones en el orden del informe."""
-	df_logistica = crear_df_logistica()
-	print("=" * 60)
-	print("COMPROBACIÓN DE EXTRACCIÓN: df_logistica")
-	print("=" * 60)
-	print(f"Dimensiones (shape): {df_logistica.shape}")
-	print("\nColumnas del DataFrame de logística:")
-	print(df_logistica.columns.tolist())
-	print("\nPrimeras 5 filas (head):")
-	print(df_logistica.head())
-	print("\nMuestra aleatoria de 5 registros (sample):")
-	print(df_logistica.sample(5, random_state=42) if len(df_logistica) >= 5 else df_logistica)
+	if df is None:
+		df = crear_df_logistica()
 
-	print("\n" + "=" * 60)
-	print("COMPRENSIÓN INICIAL: ¿Qué representa una fila?")
-	print("=" * 60)
-	print("• Una fila de df_logistica representa un evento o hito en el ciclo de vida logístico de un pedido (procesamiento, despacho, tránsito, entrega, incidencia).")
-	if "fecha_evento" in df_logistica.columns:
-		fechas = pd.to_datetime(df_logistica["fecha_evento"], errors="coerce")
-		print(f"• Rango de fechas de eventos en df_logistica: {fechas.min()} hasta {fechas.max()}")
-
-	exploracion_inicial(df_logistica, "df_logistica")
-	perfil_calidad(df_logistica)
-	estadisticos_descriptivos(df_logistica)
-	resumenes_categoricos(df_logistica)
-	resumenes_solicitados(df_logistica)
-	return df_logistica
+	exploracion_inicial(df, "df_logistica")
+	perfil_calidad(df)
+	estadisticos_descriptivos(df)
+	resumenes_categoricos(df)
+	resumenes_solicitados(df)
+	return df
 
 if __name__ == "__main__":
-	df_logistica = ejecutar_analisis()
+	df_logistica = crear_df_logistica()
+	df_logistica = ejecutar_analisis(df_logistica)
 

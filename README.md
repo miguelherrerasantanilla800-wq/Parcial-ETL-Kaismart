@@ -17,12 +17,13 @@ Proyecto de extracción, diagnóstico inicial de calidad y consultas analíticas
 ## 🚀 Requisitos e Instalación
 
 1. Clonar el repositorio:
+
    ```bash
    git clone <URL_DEL_REPOSITORIO>
    cd "Parcial ETL"
    ```
-
 2. Instalar dependencias necesarias:
+
    ```bash
    pip install pandas openpyxl mysql-connector-python schedule
    ```
@@ -31,22 +32,29 @@ Proyecto de extracción, diagnóstico inicial de calidad y consultas analíticas
 
 ## 💻 Ejecución
 
+- **Ejecutar todo el examen en el orden solicitado por el PDF:**
+
+  ```bash
+  python Ejecutar_analisis.py
+  ```
+
 - **Lanzar la Interfaz Gráfica (Tkinter):**
+
   ```bash
   python Interfaz.py
   ```
-
 - **Ejecutar extracción de Base de Datos:**
+
   ```bash
   python Extracción_BD.py
   ```
-
 - **Ejecutar extracción de Archivo Excel:**
+
   ```bash
   python Extracción_excel.py
   ```
-
 - **Iniciar plan de extracción programado:**
+
   ```bash
   python Plan_extraccion.py
   ```

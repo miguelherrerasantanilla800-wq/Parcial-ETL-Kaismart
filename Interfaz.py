@@ -1,11 +1,3 @@
-"""
-==============================================================================
-SISTEMA DE CONSULTA Y EXPLORACIÓN ETL - KAISMART SOLUTIONS S.A.S.
-Archivo: Interfaz.py
-Interfaz Gráfica Profesional en Tkinter para la exploración, diagnóstico
-de calidad y consultas analíticas de df_ventas y df_logistica.
-==============================================================================
-"""
 
 import sys
 import threading
@@ -26,9 +18,6 @@ from Extracción_excel import (
     resumenes_solicitados,
 )
 
-# -----------------------------------------------------------------------------
-# PALETA DE COLORES Y ESTILO MODERNO
-# -----------------------------------------------------------------------------
 COLORS = {
     "bg_dark": "#0f172a",       # Slate 900 (Sidebar)
     "sidebar_hover": "#1e293b", # Slate 800
@@ -148,13 +137,13 @@ class InterfazETLApp(tk.Tk):
         # Botones de Navegación
         self.nav_buttons = {}
         items_nav = [
-            ("dashboard", "📊 Resumen y Comprobación", self.mostrar_dashboard),
-            ("ventas", "🛒 df_ventas (MySQL)", self.mostrar_ventas),
-            ("logistica", "🚚 df_logistica (Excel)", self.mostrar_logistica),
-            ("preguntas", "💡 10 Preguntas de Negocio", self.mostrar_preguntas),
-            ("rastreo", "🔍 Rastreador de Pedido", self.mostrar_rastreo),
-            ("calidad", "🛡️ Perfil de Calidad", self.mostrar_calidad),
-            ("conclusiones", "📝 Conclusiones", self.mostrar_conclusiones),
+            ("dashboard", "Resumen y Comprobación", self.mostrar_dashboard),
+            ("ventas", "df_ventas (MySQL)", self.mostrar_ventas),
+            ("logistica", "df_logistica (Excel)", self.mostrar_logistica),
+            ("preguntas", "10 Preguntas de Negocio", self.mostrar_preguntas),
+            ("rastreo", "Rastreador de Pedido", self.mostrar_rastreo),
+            ("calidad", "Perfil de Calidad", self.mostrar_calidad),
+            ("conclusiones", "Conclusiones", self.mostrar_conclusiones),
         ]
 
         for key, text, cmd in items_nav:
@@ -181,7 +170,7 @@ class InterfazETLApp(tk.Tk):
         
         self.lbl_status_footer = tk.Label(
             self.sidebar,
-            text="⏳ Cargando datos...",
+            text="Cargando datos...",
             font=("Segoe UI", 8),
             fg="#94a3b8",
             bg=COLORS["bg_dark"],
@@ -193,7 +182,7 @@ class InterfazETLApp(tk.Tk):
 
         btn_reload = tk.Button(
             self.sidebar,
-            text="🔄 Recargar Fuentes",
+            text="Recargar Fuentes",
             font=("Segoe UI", 9, "bold"),
             fg=COLORS["text_light"],
             bg="#1e293b",
@@ -265,7 +254,7 @@ class InterfazETLApp(tk.Tk):
     # CARGA ASÍNCRONA DE DATOS
     # -------------------------------------------------------------------------
     def iniciar_carga_datos(self):
-        self.lbl_status_footer.configure(text="⏳ Extrayendo datos...")
+        self.lbl_status_footer.configure(text="Extrayendo datos...")
         self.badge_ventas.configure(text="MySQL: Conectando...", bg="#fef3c7", fg="#92400e")
         self.badge_logistica.configure(text="Excel: Leyendo...", bg="#fef3c7", fg="#92400e")
         
@@ -293,28 +282,28 @@ class InterfazETLApp(tk.Tk):
     def _finalizar_carga_datos(self, error_msg):
         if not self.df_ventas.empty:
             self.badge_ventas.configure(
-                text=f"✓ df_ventas: {len(self.df_ventas):,} filas",
+                text=f"df_ventas: {len(self.df_ventas):,} filas",
                 bg="#dcfce7",
                 fg="#166534"
             )
         else:
-            self.badge_ventas.configure(text="✕ df_ventas: Error", bg="#fee2e2", fg="#991b1b")
+            self.badge_ventas.configure(text="df_ventas: Error", bg="#fee2e2", fg="#991b1b")
 
         if not self.df_logistica.empty:
             self.badge_logistica.configure(
-                text=f"✓ df_logistica: {len(self.df_logistica):,} filas",
+                text=f"df_logistica: {len(self.df_logistica):,} filas",
                 bg="#dcfce7",
                 fg="#166534"
             )
         else:
-            self.badge_logistica.configure(text="✕ df_logistica: Error", bg="#fee2e2", fg="#991b1b")
+            self.badge_logistica.configure(text="df_logistica: Error", bg="#fee2e2", fg="#991b1b")
 
         if error_msg:
-            self.lbl_status_footer.configure(text="⚠️ Hubo errores al cargar.")
+            self.lbl_status_footer.configure(text="Hubo errores al cargar.")
             messagebox.showwarning("Advertencia de Extracción", "\n".join(error_msg))
         else:
             self.lbl_status_footer.configure(
-                text=f"🟢 Datos listos\nVentas: {len(self.df_ventas):,} | Logística: {len(self.df_logistica):,}"
+                text=f"Datos listos\nVentas: {len(self.df_ventas):,} | Logística: {len(self.df_logistica):,}"
             )
 
         self.datos_cargados = True
@@ -325,7 +314,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_dashboard(self):
         self._resaltar_nav("dashboard")
-        self.lbl_header_title.configure(text="📊 Comprobación de Extracción y Resumen General")
+        self.lbl_header_title.configure(text="Comprobación de Extracción y Resumen General")
         self._limpiar_contenido()
 
         if self.df_ventas.empty and self.df_logistica.empty:
@@ -359,12 +348,12 @@ class InterfazETLApp(tk.Tk):
 
         # Tab Ventas
         tab_v = tk.Frame(nb, bg=COLORS["card_bg"], padx=12, pady=12)
-        nb.add(tab_v, text="  🛒 Comprobación df_ventas  ")
+        nb.add(tab_v, text="  Comprobación df_ventas  ")
         self._render_comprobacion_tab(tab_v, self.df_ventas, "df_ventas (Base de Datos MySQL)", "Una fila representa una transacción comercial individual (venta de un producto en un pedido).")
 
         # Tab Logística
         tab_l = tk.Frame(nb, bg=COLORS["card_bg"], padx=12, pady=12)
-        nb.add(tab_l, text="  🚚 Comprobación df_logistica  ")
+        nb.add(tab_l, text="  Comprobación df_logistica  ")
         self._render_comprobacion_tab(tab_l, self.df_logistica, "df_logistica (Archivo Excel)", "Una fila representa un evento logístico en el ciclo de vida del pedido (procesamiento, tránsito, entrega).")
 
     def _crear_kpi_card(self, parent, title, value, subtitle, color_accent):
@@ -405,8 +394,8 @@ class InterfazETLApp(tk.Tk):
                     break
 
         info_text = (
-            f"📌 Fuente: {nombre_fuente}   |   Dimensiones (shape): {df.shape[0]:,} filas × {df.shape[1]} columnas\n"
-            f"📝 Significado: {significado_fila}\n"
+            f"Fuente: {nombre_fuente}   |   Dimensiones (shape): {df.shape[0]:,} filas x {df.shape[1]} columnas\n"
+            f"Significado: {significado_fila}\n"
             f"📅 Rango de Fechas Detectado: {fechas_min_max}"
         )
         tk.Label(meta_frame, text=info_text, font=("Segoe UI", 9), fg="#334155", bg="#f8fafc", justify="left").pack(anchor="w")
@@ -458,7 +447,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_ventas(self):
         self._resaltar_nav("ventas")
-        self.lbl_header_title.configure(text="🛒 Exploración y Consultas: df_ventas (Base de Datos MySQL)")
+        self.lbl_header_title.configure(text="Exploración y Consultas: df_ventas (Base de Datos MySQL)")
         self._limpiar_contenido()
 
         if self.df_ventas.empty:
@@ -481,7 +470,7 @@ class InterfazETLApp(tk.Tk):
 
         # 3. Estadísticos Descriptivos
         tab_est = tk.Frame(nb, bg=COLORS["card_bg"], padx=14, pady=14)
-        nb.add(tab_est, text="  📊 Estadísticos Descriptivos  ")
+        nb.add(tab_est, text="  Estadísticos Descriptivos  ")
         self._render_estadisticos(tab_est, estadisticos_ventas(self.df_ventas))
 
     def _render_resumenes_ventas(self, parent):
@@ -545,7 +534,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_logistica(self):
         self._resaltar_nav("logistica")
-        self.lbl_header_title.configure(text="🚚 Exploración y Consultas: df_logistica (Archivo Excel)")
+        self.lbl_header_title.configure(text="Exploración y Consultas: df_logistica (Archivo Excel)")
         self._limpiar_contenido()
 
         if self.df_logistica.empty:
@@ -567,7 +556,7 @@ class InterfazETLApp(tk.Tk):
 
         # 3. Estadísticos Descriptivos
         tab_est = tk.Frame(nb, bg=COLORS["card_bg"], padx=14, pady=14)
-        nb.add(tab_est, text="  📊 Estadísticos de Tiempos y Costos  ")
+        nb.add(tab_est, text="  Estadísticos de Tiempos y Costos  ")
         self._render_estadisticos(tab_est, estadisticos_descriptivos(self.df_logistica))
 
     def _render_resumenes_logistica(self, parent):
@@ -612,7 +601,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_preguntas(self):
         self._resaltar_nav("preguntas")
-        self.lbl_header_title.configure(text="💡 Parte 6: 10 Preguntas de Negocio (Conocimiento Previo)")
+        self.lbl_header_title.configure(text="Parte 6: 10 Preguntas de Negocio (Conocimiento Previo)")
         self._limpiar_contenido()
 
         scroll_c = tk.Canvas(self.content_frame, bg=COLORS["bg_light"], highlightthickness=0)
@@ -771,7 +760,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_rastreo(self):
         self._resaltar_nav("rastreo")
-        self.lbl_header_title.configure(text="🔍 Rastreador de Pedidos por 'pedido_id'")
+        self.lbl_header_title.configure(text="Rastreador de Pedidos por 'pedido_id'")
         self._limpiar_contenido()
 
         # Barra de búsqueda
@@ -814,7 +803,7 @@ class InterfazETLApp(tk.Tk):
             # Renderizar Split Panes
             box_v = tk.LabelFrame(
                 results_container,
-                text=f" 🛒 Datos Comerciales (df_ventas) - {len(v_match)} Registro(s) ",
+                text=f" Datos Comerciales (df_ventas) - {len(v_match)} Registro(s) ",
                 font=("Segoe UI", 10, "bold"),
                 fg=COLORS["primary"],
                 bg=COLORS["card_bg"],
@@ -831,7 +820,7 @@ class InterfazETLApp(tk.Tk):
 
             box_l = tk.LabelFrame(
                 results_container,
-                text=f" 🚚 Trazabilidad Logística (df_logistica) - {len(l_match)} Evento(s) ",
+                text=f" Trazabilidad Logística (df_logistica) - {len(l_match)} Evento(s) ",
                 font=("Segoe UI", 10, "bold"),
                 fg=COLORS["success"],
                 bg=COLORS["card_bg"],
@@ -848,7 +837,7 @@ class InterfazETLApp(tk.Tk):
 
         btn_buscar = tk.Button(
             search_card,
-            text="🔍 Rastrear Pedido",
+            text="Rastrear Pedido",
             font=("Segoe UI", 9, "bold"),
             bg=COLORS["primary"],
             fg="#ffffff",
@@ -869,7 +858,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_calidad(self):
         self._resaltar_nav("calidad")
-        self.lbl_header_title.configure(text="🛡️ Perfil Inicial de Calidad del Dato (Nulos, Unicidad y Duplicados)")
+        self.lbl_header_title.configure(text="Perfil Inicial de Calidad del Dato (Nulos, Unicidad y Duplicados)")
         self._limpiar_contenido()
 
         nb = ttk.Notebook(self.content_frame)
@@ -877,12 +866,12 @@ class InterfazETLApp(tk.Tk):
 
         # Tab Calidad Ventas
         tab_v = tk.Frame(nb, bg=COLORS["card_bg"], padx=14, pady=14)
-        nb.add(tab_v, text="  🛒 Calidad: df_ventas  ")
+        nb.add(tab_v, text="  Calidad: df_ventas  ")
         self._render_perfil_calidad_ui(tab_v, self.df_ventas, "df_ventas")
 
         # Tab Calidad Logística
         tab_l = tk.Frame(nb, bg=COLORS["card_bg"], padx=14, pady=14)
-        nb.add(tab_l, text="  🚚 Calidad: df_logistica  ")
+        nb.add(tab_l, text="  Calidad: df_logistica  ")
         self._render_perfil_calidad_ui(tab_l, self.df_logistica, "df_logistica")
 
     def _render_perfil_calidad_ui(self, parent, df, nombre):
@@ -922,7 +911,7 @@ class InterfazETLApp(tk.Tk):
     # -------------------------------------------------------------------------
     def mostrar_conclusiones(self):
         self._resaltar_nav("conclusiones")
-        self.lbl_header_title.configure(text="📝 Conclusiones y Diagnóstico ETL")
+        self.lbl_header_title.configure(text="Conclusiones y Diagnóstico ETL")
         self._limpiar_contenido()
 
         scroll_c = tk.Canvas(self.content_frame, bg=COLORS["bg_light"], highlightthickness=0)
@@ -943,7 +932,7 @@ class InterfazETLApp(tk.Tk):
         
         pv = tk.Frame(card_v, bg=COLORS["card_bg"], padx=16, pady=12)
         pv.pack(fill=tk.BOTH)
-        tk.Label(pv, text="📌 Hallazgos Clave: df_ventas (Fuente Comercial)", font=("Segoe UI", 11, "bold"), fg=COLORS["primary"], bg=COLORS["card_bg"]).pack(anchor="w", pady=(0, 6))
+        tk.Label(pv, text="Hallazgos Clave: df_ventas (Fuente Comercial)", font=("Segoe UI", 11, "bold"), fg=COLORS["primary"], bg=COLORS["card_bg"]).pack(anchor="w", pady=(0, 6))
 
         hallazgos_v = [
             "1. df_ventas contiene 5.000 registros y 17 variables.",
@@ -963,7 +952,7 @@ class InterfazETLApp(tk.Tk):
         
         pl = tk.Frame(card_l, bg=COLORS["card_bg"], padx=16, pady=12)
         pl.pack(fill=tk.BOTH)
-        tk.Label(pl, text="📌 Hallazgos Clave: df_logistica (Fuente Operativa)", font=("Segoe UI", 11, "bold"), fg=COLORS["success"], bg=COLORS["card_bg"]).pack(anchor="w", pady=(0, 6))
+        tk.Label(pl, text="Hallazgos Clave: df_logistica (Fuente Operativa)", font=("Segoe UI", 11, "bold"), fg=COLORS["success"], bg=COLORS["card_bg"]).pack(anchor="w", pady=(0, 6))
 
         hallazgos_l = [
             "1. df_logistica contiene 50.000 registros y 13 variables.",

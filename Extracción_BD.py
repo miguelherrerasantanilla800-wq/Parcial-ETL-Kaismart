@@ -35,9 +35,7 @@ def crear_df_ventas(
 def explorar_df_ventas():
 	"""Muestra la estructura y calidad del DataFrame de ventas."""
 	df_ventas = crear_df_ventas()
-	print("=" * 60)
 	print("COMPROBACIÓN DE EXTRACCIÓN: df_ventas")
-	print("=" * 60)
 	print(f"Dimensiones (shape): {df_ventas.shape}")
 	print("\nColumnas del DataFrame de ventas:")
 	print(df_ventas.columns.tolist())
@@ -46,9 +44,7 @@ def explorar_df_ventas():
 	print("\nMuestra aleatoria de 5 registros (sample):")
 	print(df_ventas.sample(5, random_state=42) if len(df_ventas) >= 5 else df_ventas)
 	
-	print("\n" + "=" * 60)
-	print("COMPRENSIÓN INICIAL: ¿Qué representa una fila?")
-	print("=" * 60)
+	print("¿Qué representa una fila?")
 	print("• Una fila de df_ventas representa una transacción comercial individual (venta de un producto específico en un pedido realizado por un cliente).")
 	if "fecha_venta" in df_ventas.columns:
 		fechas = pd.to_datetime(df_ventas["fecha_venta"], errors="coerce")
